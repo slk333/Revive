@@ -13,6 +13,7 @@
 		7DC5BBA821CFE9A000D40150 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA721CFE9A000D40150 /* Assets.xcassets */; };
 		7DC5BBAB21CFE9A000D40150 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA921CFE9A000D40150 /* LaunchScreen.storyboard */; };
 		7DC5BBB321CFEBA500D40150 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5BBB221CFEBA500D40150 /* TableViewController.swift */; };
+		7DD3812721D186B1009C63E5 /* TasksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD3812621D186B1009C63E5 /* TasksManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		7DC5BBAA21CFE9A000D40150 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7DC5BBAC21CFE9A000D40150 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7DC5BBB221CFEBA500D40150 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		7DD3812621D186B1009C63E5 /* TasksManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,10 +58,11 @@
 		7DC5BB9F21CFE99F00D40150 /* Revive */ = {
 			isa = PBXGroup;
 			children = (
+				7DC5BBA421CFE99F00D40150 /* Main.storyboard */,
 				7DC5BBA021CFE99F00D40150 /* AppDelegate.swift */,
 				7DC5BBA221CFE99F00D40150 /* ViewController.swift */,
-				7DC5BBA421CFE99F00D40150 /* Main.storyboard */,
 				7DC5BBB221CFEBA500D40150 /* TableViewController.swift */,
+				7DD3812621D186B1009C63E5 /* TasksManager.swift */,
 				7DC5BBA721CFE9A000D40150 /* Assets.xcassets */,
 				7DC5BBA921CFE9A000D40150 /* LaunchScreen.storyboard */,
 				7DC5BBAC21CFE9A000D40150 /* Info.plist */,
@@ -140,6 +143,7 @@
 			files = (
 				7DC5BBA321CFE99F00D40150 /* ViewController.swift in Sources */,
 				7DC5BBB321CFEBA500D40150 /* TableViewController.swift in Sources */,
+				7DD3812721D186B1009C63E5 /* TasksManager.swift in Sources */,
 				7DC5BBA121CFE99F00D40150 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

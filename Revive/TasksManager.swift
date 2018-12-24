@@ -4,12 +4,20 @@ class TasksManager{
     struct Step:Codable{
         let date : Date
         let comment : String
+        
+        init(date:Date = Date(),comment:String = "Ajout de la task") {
+            self.date = date
+            self.comment = comment
+        }
     }
-    
     
     struct Task:Codable{
         let name : String
         var steps : [Step]
+        init(name:String,steps:[Step] = [Step()]) {
+            self.name = name
+            self.steps = steps
+        }
     }
     
     
@@ -89,44 +97,26 @@ class TasksManager{
         if let tasks = localStorage.data(forKey: "tasks"){
             self.tasks = try! JSONDecoder().decode([Task].self, from: tasks)
         }
-        
-        
-        
+
         
         // si localStorage est vide
         
         if tasks.isEmpty
         {
+            let taskNames = ["Swift","Web","Chinese"]
+            for taskName in taskNames{
+                tasks.append(Task(name: taskName))
+            }
             
-            tasks.append(Task(name: "Swift", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "Web", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "review Chinese app", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "phrases de chinois OLD", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "happy Chinese", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "90 lessons de chinois", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "phrases", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "Discover China 4", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "Discover China 3", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "Phrases de Chinois Oral", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Abdos", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Adbos Latéraux", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Haut du Dos", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Cardio", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Jambes", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Dos", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Dips", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Epaules", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Tractions", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            tasks.append(Task(name: "GYM Pectoraux", steps: [Step(date: Date(), comment: "Ajout de la task")]))
-            
+        
             
             let data = try! JSONEncoder().encode(tasks)
             
             // save the tasks in localestorage
             
             localStorage.set(data, forKey: "tasks")
-            
         }
+        
         
         
         tasks.sort { (t1, t2) -> Bool in

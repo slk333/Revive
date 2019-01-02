@@ -1,19 +1,48 @@
 import UIKit
-
+extension UINavigationController {
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return topViewController?.preferredStatusBarStyle ?? .default
+    }
+}
 class TableViewController: UITableViewController {
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
 let tasksManager = TasksManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
       
+        var scoreTotal = 0
+        for task in tasksManager.tasks{
+            scoreTotal += (task.steps.count - 1)
+        }
+        let scoreLabel = UILabel(frame: CGRect())
+        scoreLabel.text = "[\(scoreTotal)]"
+        scoreLabel.sizeToFit()
+        scoreLabel.textColor = .white
+
+       self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: scoreLabel)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTask))
     }
-    
+
     
     
     @objc func addTask(){
@@ -66,7 +95,7 @@ let tasksManager = TasksManager()
         let i = indexPath.row
         
         let nameLabel = cell.viewWithTag(1) as! UILabel
-        nameLabel.text = tasksManager.tasks[i].name
+        nameLabel.text = tasksManager.tasks[i].name + " - \(tasksManager.tasks[i].steps.count - 1)"
         
         let dateLabel = cell.viewWithTag(2) as! UILabel
         
@@ -74,7 +103,10 @@ let tasksManager = TasksManager()
         let myFormatter = DateFormatter()
         myFormatter.dateFormat = "EEEE dd MMMM yyyy', à' HH:mm"
         myFormatter.locale=Locale(identifier: "fr")
-        dateLabel.text = myFormatter.string(from: date)
+        let durationInDays = floor(date.timeIntervalSinceNow * -1 * 10 / (3600 * 24)) / 10
+        
+        dateLabel.text = myFormatter.string(from: date) + " [\(durationInDays)]"
+      
         
        
         
@@ -82,6 +114,11 @@ let tasksManager = TasksManager()
         
         let progressView = cell.viewWithTag(3) as! UIProgressView
         progressView.progress = Float(relativePriority)
+        
+        let lastStepLabel = cell.viewWithTag(4) as! UILabel
+         lastStepLabel.text = tasksManager.tasks[i].steps.last?.comment
+        
+        
     
         
 
@@ -152,20 +189,25 @@ let tasksManager = TasksManager()
                 return
             }
             self.tasksManager.registerStep(index:indexPath.row,comment:comment)
-            
+            tableView.deselectRow(at: indexPath, animated: true)
          
             self.tableView.reloadData()
             
         }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {_ in tableView.deselectRow(at: indexPath, animated: true)})
+    
             alertController.addAction(saveAction)
             alertController.addAction(cancelAction)
             alertController.addTextField(configurationHandler: nil)
-        
+      
+     
         
         
         
         
         self.present(alertController, animated: true)
+        
     }
+  
+   
 }

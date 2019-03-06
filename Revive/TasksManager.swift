@@ -25,11 +25,15 @@ class TasksManager{
     
     
     var tasks = [Task]()
+    var filteredTasks = [Task]()
+    
     var taskDates:[Date] { return tasks.map{
+        // the date of the task is defined as the date of the last step which was made
         (task:Task) in return task.steps.last?.date ?? Date()
         }
     }
-   
+    
+    // the task priority is relative to the oldest task
     func taskPriorityForTaskAt(index:Int)->Float{
         let oldestDate = taskDates.min()!
         let biggestInterval = oldestDate.timeIntervalSinceNow
@@ -41,38 +45,70 @@ class TasksManager{
     
     
     func createNewTask(name:String){
-    tasks.append(Task(name: name, steps: [Step(date: Date(), comment: "Ajout de la task")]))
-    tasks.sort { (t1, t2) -> Bool in
-    t1.steps.last!.date < t2.steps.last!.date
-    }
-        let data = try! JSONEncoder().encode(tasks)
-        // save the tasks if there is no task already
+        // add the task
+        tasks.append(Task(name: name, steps: [Step()]))
+        tasks.sort { (task1, task2) -> Bool in
+            task1.steps.last!.date < task2.steps.last!.date
+            // a smaller date is an older date
+        }
+        saveTasks()
         
-        self.localStorage.set(data, forKey: "tasks")
     }
     
     func deleteTask(index:Int){
         tasks.remove(at: index)
         
-        let data = try! JSONEncoder().encode(self.tasks)
-        // save the tasks if there is no task already
-        
-        self.localStorage.set(data, forKey: "tasks")
+        saveTasks()
         
     }
     
-    func registerStep(index:Int,comment:String){
+    func createStep(index:Int,comment:String){
+        // add a step
         
         self.tasks[index].steps.append(Step(date: Date(), comment: comment))
         self.tasks.sort { (t1, t2) -> Bool in
             t1.steps.last!.date < t2.steps.last!.date
         }
-        let data = try! JSONEncoder().encode(self.tasks)
-        // save the tasks if there is no task already
+        saveTasks()
         
-        self.localStorage.set(data, forKey: "tasks")
     }
     
+    func saveTasks(){
+       
+        let data = try! JSONEncoder().encode(tasks)
+        
+         // save the tasks in localStorage
+        self.localStorage.set(data, forKey: "tasks")
+        
+        // and/or save into Tasks.json
+       // let url = Bundle.main.url(forResource: "Tasks", withExtension: "json")!
+       // try! data.write(to: url)
+        
+    //  saveToLocalJSON()
+     
+        
+       
+        
+        
+    }
+    
+    
+    func saveToLocalJSON(){
+        let data = try! JSONEncoder().encode(tasks)
+        
+        let fileManager = FileManager.default
+        
+        do {
+            let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+            let fileURL = documentDirectory.appendingPathComponent("tasks.json")
+            
+            try data.write(to: fileURL)
+            
+            
+        } catch {
+            print(error)
+        }
+    }
     
     
     
@@ -92,33 +128,21 @@ class TasksManager{
     
     init() {
         
-        // retrieve Tasks from LocalStorage
+        // load Tasks from LocalStorage into tasks
         
         if let tasks = localStorage.data(forKey: "tasks"){
             self.tasks = try! JSONDecoder().decode([Task].self, from: tasks)
         }
-
         
-        // si localStorage est vide
         
-        if tasks.isEmpty
-        {
-            let taskNames = ["Swift","Web","Chinese"]
-            for taskName in taskNames{
-                tasks.append(Task(name: taskName))
-            }
-            
+        // if LocalStorage is empty, fill it with placeholder content
         
-            
-            let data = try! JSONEncoder().encode(tasks)
-            
-            // save the tasks in localestorage
-            
-            localStorage.set(data, forKey: "tasks")
+        if tasks.isEmpty{
+            tasks.append(Task(name: "Placeholder Task"))
+            saveTasks()
         }
         
-        
-        
+        // trie les tasks, dans le cas où elles ne sont pas sauvegardées dans le bon ordre
         tasks.sort { (t1, t2) -> Bool in
             t1.steps.last!.date < t2.steps.last!.date
         }

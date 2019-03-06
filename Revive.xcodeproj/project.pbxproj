@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7DA0DFC52209F039005ACF5E /* Tasks.json in Resources */ = {isa = PBXBuildFile; fileRef = 7DA0DFC42209F039005ACF5E /* Tasks.json */; };
 		7DC5BBA121CFE99F00D40150 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA021CFE99F00D40150 /* AppDelegate.swift */; };
 		7DC5BBA321CFE99F00D40150 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA221CFE99F00D40150 /* ViewController.swift */; };
 		7DC5BBA621CFE99F00D40150 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA421CFE99F00D40150 /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7DA0DFC42209F039005ACF5E /* Tasks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tasks.json; sourceTree = "<group>"; };
 		7DC5BB9D21CFE99F00D40150 /* Revive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Revive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DC5BBA021CFE99F00D40150 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7DC5BBA221CFE99F00D40150 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				7DC5BBA721CFE9A000D40150 /* Assets.xcassets */,
 				7DC5BBA921CFE9A000D40150 /* LaunchScreen.storyboard */,
 				7DC5BBAC21CFE9A000D40150 /* Info.plist */,
+				7DA0DFC42209F039005ACF5E /* Tasks.json */,
 			);
 			path = Revive;
 			sourceTree = "<group>";
@@ -128,6 +131,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DA0DFC52209F039005ACF5E /* Tasks.json in Resources */,
 				7DC5BBAB21CFE9A000D40150 /* LaunchScreen.storyboard in Resources */,
 				7DC5BBA821CFE9A000D40150 /* Assets.xcassets in Resources */,
 				7DC5BBA621CFE99F00D40150 /* Main.storyboard in Resources */,

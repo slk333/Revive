@@ -63,8 +63,8 @@ class TableViewController: UITableViewController {
                 print("That name is already being used!")
                 return
             }
-           
-        
+            
+            
             
             
             
@@ -96,9 +96,9 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if isFiltering(){
-             return tasksManager.filteredTasks.count
+            return tasksManager.filteredTasks.count
         } else{
-           return tasksManager.tasksDictionary.count
+            return tasksManager.tasksDictionary.count
         }
         
     }
@@ -106,7 +106,7 @@ class TableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-       
+        
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath)
         
@@ -168,9 +168,9 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let cell = tableView.cellForRow(at: indexPath)!
-           let nameLabel = cell.viewWithTag(1) as! UILabel
+            let nameLabel = cell.viewWithTag(1) as! UILabel
             let name = nameLabel.text!
-           
+            
             
             tasksManager.deleteTask(name:name)
             if isFiltering(){
@@ -213,7 +213,7 @@ class TableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      
+        
         let cell = tableView.cellForRow(at: indexPath)!
         let nameLabel = cell.viewWithTag(1) as! UILabel
         let name = nameLabel.text!
@@ -237,9 +237,9 @@ class TableViewController: UITableViewController {
             
             if self.isFiltering(){
                 self.filterContentForSearchText((self.navigationItem.searchController?.searchBar.text!)!)
-            tableView.moveRow(at : indexPath,
-                              to : IndexPath(row: self.tasksManager.filteredTasks.count-1, section: 0))
-            tableView.reloadRows(at: [IndexPath(row: self.tasksManager.filteredTasks.count-1, section: 0)], with: .automatic)
+                tableView.moveRow(at : indexPath,
+                                  to : IndexPath(row: self.tasksManager.filteredTasks.count-1, section: 0))
+                tableView.reloadRows(at: [IndexPath(row: self.tasksManager.filteredTasks.count-1, section: 0)], with: .automatic)
             }
             else{
                 
@@ -271,7 +271,7 @@ class TableViewController: UITableViewController {
 
 extension TableViewController:UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
-
+        
         filterContentForSearchText(searchController.searchBar.text!)
         tableView.reloadData()
     }

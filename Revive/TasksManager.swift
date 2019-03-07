@@ -4,10 +4,11 @@ class TasksManager{
     let localStorage = UserDefaults.standard
     
     struct Step:Codable{
-        let date = Date()
+        let date : Date
         let comment : String
         
-        init(comment:String = "Task Added") {
+        init(date:Date = Date(),comment:String = "Task Added") {
+            self.date = date
             self.comment = comment
         }
     }
@@ -15,13 +16,14 @@ class TasksManager{
     struct Task:Codable{
         
         let name : String
-        var steps = [Step()]
+        var steps : [Step]
         var count : Int {return steps.count-1}
         var lactCompletionDate : Date {return steps.last!.date}
         
         
-        init(name:String) {
+        init(name:String,steps:[Step] = [Step()]){
             
+            self.steps = steps
             self.name = name
             
         }
@@ -167,7 +169,7 @@ class TasksManager{
             
         }
         
-
+        
         
         
         

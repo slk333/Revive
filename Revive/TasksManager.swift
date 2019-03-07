@@ -142,38 +142,10 @@ class TasksManager{
     
     
     
-    
-    
-    
-    
-    
-    
-    
     init() {
         
         
-        // migration
-        
-        // old data is at "tasks"
-        if let oldArray = localStorage.data(forKey: "tasks"){
-            let tasks = try! JSONDecoder().decode([Task].self, from: oldArray)
-            print("old array found! content: *************")
-            print(tasks)
-            
-            
-            for task in tasks{
-                self.tasksDictionary.updateValue(task, forKey: task.name)
-                
-            }
-            saveTasks()
-            
-        }
-        
-        
-        
-        
-        
-        // load Tasks from LocalStorage into tasks
+        // if there is data already
         
         if let tasksDictionary = localStorage.data(forKey: "tasksDictionary"){
             self.tasksDictionary = try! JSONDecoder().decode([String:Task].self, from: tasksDictionary)
@@ -184,19 +156,40 @@ class TasksManager{
             }
         }
         
-        
-        // if LocalStorage is empty, fill it with placeholder content
-        
-        
-        if tasksDictionary.isEmpty{
+         // if not
+        else{
             
-            let name = "Placeholder Task"
-            let placeHolderTask = Task(name: name)
-            tasksDictionary.updateValue(placeHolderTask, forKey: name)
-            
+            // try migration
+            // old data can be at "tasks"
+            if let oldArray = localStorage.data(forKey: "tasks"){
+                let tasks = try! JSONDecoder().decode([Task].self, from: oldArray)
+                print("old array found! content: *************")
+                print(tasks)
+                for task in tasks{
+                    self.tasksDictionary.updateValue(task, forKey: task.name)
+                }
+                saveTasks()
+            }
+                
+                // if no migration
+            else{
+                 // create a placeholder task
+                
+                if tasksDictionary.isEmpty{
+                    
+                    let name = "Placeholder Task"
+                    let placeHolderTask = Task(name: name)
+                    tasksDictionary.updateValue(placeHolderTask, forKey: name)
+                }
+            }
         }
         
-        // calcule tasks
+        
+        
+    
+        
+        
+        
         
         
         

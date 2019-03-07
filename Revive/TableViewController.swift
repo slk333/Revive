@@ -54,9 +54,19 @@ class TableViewController: UITableViewController {
             
             guard let taskName = alertController.textFields?.first?.text, taskName != "" else{
                 self.present(alertController, animated: true, completion: nil)
-                print("there was no input, asking again")
+                print("There was no input!")
                 return
             }
+            
+            guard self.tasksManager.tasksDictionary[taskName] == nil  else{
+                self.present(alertController, animated: true, completion: nil)
+                print("That name is already being used!")
+                return
+            }
+           
+        
+            
+            
             
             self.tasksManager.createNewTask(name: taskName)
             
@@ -88,7 +98,7 @@ class TableViewController: UITableViewController {
         if isFiltering(){
              return tasksManager.filteredTasks.count
         } else{
-           return tasksManager.tasks.count
+           return tasksManager.tasksDictionary.count
         }
         
     }
@@ -112,7 +122,7 @@ class TableViewController: UITableViewController {
         }
         
         
-        nameLabel.text = task.name + " - \(task.steps.count - 1)"
+        nameLabel.text = task.name
         
         let dateLabel = cell.viewWithTag(2) as! UILabel
         
@@ -157,8 +167,15 @@ class TableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            let cell = tableView.cellForRow(at: indexPath)!
+           let nameLabel = cell.viewWithTag(1) as! UILabel
+            let name = nameLabel.text!
+           
             
-            tasksManager.deleteTask(index: indexPath.row)
+            tasksManager.deleteTask(name:name)
+            if isFiltering(){
+                self.filterContentForSearchText((self.navigationItem.searchController?.searchBar.text!)!)
+            }
             tableView.deleteRows(at: [indexPath], with: .fade)
             
             
@@ -196,10 +213,10 @@ class TableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if isFiltering(){
-             tableView.deselectRow(at: indexPath, animated: true)
-            return
-        }
+      
+        let cell = tableView.cellForRow(at: indexPath)!
+        let nameLabel = cell.viewWithTag(1) as! UILabel
+        let name = nameLabel.text!
         
         let alertController=UIAlertController(title: "Save your progress", message: "what did you do ?", preferredStyle: UIAlertController.Style.alert)
         
@@ -214,14 +231,23 @@ class TableViewController: UITableViewController {
             // step validated with non-void commit-message
             
             // update data
-            self.tasksManager.createStep(index:indexPath.row,comment:comment)
+            self.tasksManager.createStep(name:name,comment:comment)
             
             tableView.deselectRow(at: indexPath, animated: true)
             
-            
+            if self.isFiltering(){
+                self.filterContentForSearchText((self.navigationItem.searchController?.searchBar.text!)!)
             tableView.moveRow(at : indexPath,
-                              to : IndexPath(row: self.tasksManager.tasks.count-1, section: 0))
-            tableView.reloadRows(at: [IndexPath(row: self.tasksManager.tasks.count-1, section: 0)], with: .automatic)
+                              to : IndexPath(row: self.tasksManager.filteredTasks.count-1, section: 0))
+            tableView.reloadRows(at: [IndexPath(row: self.tasksManager.filteredTasks.count-1, section: 0)], with: .automatic)
+            }
+            else{
+                
+                tableView.moveRow(at : indexPath,
+                                  to : IndexPath(row: self.tasksManager.tasks.count-1, section: 0))
+                tableView.reloadRows(at: [IndexPath(row: self.tasksManager.tasks.count-1, section: 0)], with: .automatic)
+                
+            }
             
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {_ in tableView.deselectRow(at: indexPath, animated: true)})
@@ -245,8 +271,9 @@ class TableViewController: UITableViewController {
 
 extension TableViewController:UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
-        print("test")
+
         filterContentForSearchText(searchController.searchBar.text!)
+        tableView.reloadData()
     }
     
     func searchBarIsEmpty() -> Bool {
@@ -259,7 +286,7 @@ extension TableViewController:UISearchResultsUpdating{
             return task.name.lowercased().contains(searchText.lowercased())
         })
         
-        tableView.reloadData()
+        
     }
     
     func isFiltering() -> Bool {

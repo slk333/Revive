@@ -1,93 +1,114 @@
 import Foundation
 class TasksManager{
     
+    let localStorage = UserDefaults.standard
+    
     struct Step:Codable{
-        let date : Date
+        let date = Date()
         let comment : String
         
-        init(date:Date = Date(),comment:String = "Ajout de la task") {
-            self.date = date
+        init(comment:String = "Task Added") {
             self.comment = comment
         }
     }
     
     struct Task:Codable{
+        
         let name : String
-        var steps : [Step]
-        init(name:String,steps:[Step] = [Step()]) {
+        var steps = [Step()]
+        var count : Int {return steps.count-1}
+        var lactCompletionDate : Date {return steps.last!.date}
+        
+        
+        init(name:String) {
+            
             self.name = name
-            self.steps = steps
+            
         }
     }
     
     
-    let localStorage = UserDefaults.standard
     
     
-    var tasks = [Task]()
+    var tasksDictionary = [String:Task]()
+    
+    
+    
+    
+    var tasks : [Task] {
+        return(
+            tasksDictionary.map{
+                $0.value
+                }.sorted(by: { (t1, t2) -> Bool in
+                    t1.steps.last!.date < t2.steps.last!.date
+                })
+        )
+        
+    }
+    
+    
+    
     var filteredTasks = [Task]()
     
     var taskDates:[Date] { return tasks.map{
         // the date of the task is defined as the date of the last step which was made
-        (task:Task) in return task.steps.last?.date ?? Date()
+        (task:Task) in return task.lactCompletionDate
         }
     }
     
     // the task priority is relative to the oldest task
     func taskPriorityForTaskAt(index:Int)->Float{
-        let oldestDate = taskDates.min()!
-        let biggestInterval = oldestDate.timeIntervalSinceNow
-        let date = tasks[index].steps.last!.date
-        let age = date.timeIntervalSinceNow
-        let proportion = age / biggestInterval
+        let oldestTaskAge = taskDates.min()!.timeIntervalSinceNow
+        let currentTaskAge = tasks[index].lactCompletionDate.timeIntervalSinceNow
+        let proportion = currentTaskAge / oldestTaskAge
         return Float(proportion)
     }
     
     
     func createNewTask(name:String){
         // add the task
-        tasks.append(Task(name: name, steps: [Step()]))
-        tasks.sort { (task1, task2) -> Bool in
-            task1.steps.last!.date < task2.steps.last!.date
-            // a smaller date is an older date
+        guard tasksDictionary[name] == nil else{
+            print("A task with that name already exists")
+            return
         }
+        
+        let newTask = Task(name: name)
+        tasksDictionary.updateValue(newTask, forKey: name)
         saveTasks()
         
     }
     
-    func deleteTask(index:Int){
-        tasks.remove(at: index)
-        
+    func deleteTask(name:String){
+        tasksDictionary.removeValue(forKey: name)
         saveTasks()
         
     }
     
-    func createStep(index:Int,comment:String){
+    func createStep(name:String,comment:String){
         // add a step
         
-        self.tasks[index].steps.append(Step(date: Date(), comment: comment))
-        self.tasks.sort { (t1, t2) -> Bool in
-            t1.steps.last!.date < t2.steps.last!.date
-        }
+        tasksDictionary[name]!.steps.append(Step(comment: comment))
         saveTasks()
         
     }
     
     func saveTasks(){
-       
-        let data = try! JSONEncoder().encode(tasks)
         
-         // save the tasks in localStorage
-        self.localStorage.set(data, forKey: "tasks")
+        
+        
+        let data = try! JSONEncoder().encode(tasksDictionary)
+        
+        // save the tasks in localStorage
+        self.localStorage.set(data, forKey: "tasksDictionary")
         
         // and/or save into Tasks.json
-       // let url = Bundle.main.url(forResource: "Tasks", withExtension: "json")!
-       // try! data.write(to: url)
+        // let url = Bundle.main.url(forResource: "Tasks", withExtension: "json")!
+        // try! data.write(to: url)
         
-    //  saveToLocalJSON()
-     
+        //  saveToLocalJSON()
         
-       
+        
+        
         
         
     }
@@ -128,24 +149,55 @@ class TasksManager{
     
     init() {
         
+        
+        // migration
+        
+        // old data is at "tasks"
+        if let oldArray = localStorage.data(forKey: "tasks"){
+            let tasks = try! JSONDecoder().decode([Task].self, from: oldArray)
+            print("old array found! content: *************")
+            print(tasks)
+            
+            
+            for task in tasks{
+                self.tasksDictionary.updateValue(task, forKey: task.name)
+                
+            }
+            saveTasks()
+            
+        }
+        
+
+        
+        
+        
         // load Tasks from LocalStorage into tasks
         
-        if let tasks = localStorage.data(forKey: "tasks"){
-            self.tasks = try! JSONDecoder().decode([Task].self, from: tasks)
+        if let tasksDictionary = localStorage.data(forKey: "tasksDictionary"){
+            self.tasksDictionary = try! JSONDecoder().decode([String:Task].self, from: tasksDictionary)
+            print("loaded dictionary from localStorage with success! content: *************")
+            
+            for entry in self.tasksDictionary{
+                print("\(entry.key)  \(entry.value)")
+            }
         }
         
         
         // if LocalStorage is empty, fill it with placeholder content
         
-        if tasks.isEmpty{
-            tasks.append(Task(name: "Placeholder Task"))
-            saveTasks()
+        
+        if tasksDictionary.isEmpty{
+            
+            let name = "Placeholder Task"
+            let placeHolderTask = Task(name: name)
+            tasksDictionary.updateValue(placeHolderTask, forKey: name)
+            
         }
         
-        // trie les tasks, dans le cas où elles ne sont pas sauvegardées dans le bon ordre
-        tasks.sort { (t1, t2) -> Bool in
-            t1.steps.last!.date < t2.steps.last!.date
-        }
+        // calcule tasks
+        
+        
+        
     }
     
     

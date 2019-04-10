@@ -1,7 +1,17 @@
 import Foundation
+import Firebase
+
+
 class TasksManager{
+    var db : Firestore!
+    
+    
+    
+    
+    
     
     let localStorage = UserDefaults.standard
+    
     
     struct Step:Codable{
         let date : Date
@@ -78,23 +88,87 @@ class TasksManager{
         tasksDictionary.updateValue(newTask, forKey: name)
         saveTasks()
         
+        
+        
+        
+        // firebase
+        func stepToDictionary(step:Step)->[String:Any]{
+            return  ["comment":step.comment,"date":Timestamp(date: step.date)]
+        }
+        
+        
+        db.collection("tasks").document(newTask.name).setData([
+            
+            "steps" : newTask.steps.map(stepToDictionary),
+            "name": newTask.name,
+            
+            "count": newTask.steps.count-1,
+            "lastCompletionDate":Timestamp(date:newTask.steps.last!.date)
+            
+            
+            
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+        
+        // firebase fin
+        
     }
     
     func deleteTask(name:String){
         tasksDictionary.removeValue(forKey: name)
         saveTasks()
         
+        db.collection("tasks").document(name).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
+        
     }
     
     func createStep(name:String,comment:String){
         // add a step
         
-        tasksDictionary[name]!.steps.append(Step(comment: comment))
+        let newStep = Step(comment: comment)
+        tasksDictionary[name]!.steps.append(newStep)
         saveTasks()
+        
+        // firebase
+        func stepToDictionary(step:Step)->[String:Any]{
+            return  ["comment":step.comment,"date":Timestamp(date: step.date)]
+        }
+        
+        db.collection("tasks").document(name).updateData([
+            "steps": FieldValue.arrayUnion([stepToDictionary(step: newStep)])
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+        // firebase end
+        
+        
+        
+        
+        
+        
+        
+        
         
     }
     
     func saveTasks(){
+        
+        
         
         
         
@@ -107,8 +181,9 @@ class TasksManager{
         // let url = Bundle.main.url(forResource: "Tasks", withExtension: "json")!
         // try! data.write(to: url)
         
-        //  saveToLocalJSON()
+        saveToLocalJSON()
         
+        // !! save to FIREBASE database
         
         
         
@@ -143,7 +218,8 @@ class TasksManager{
     
     
     init() {
-        
+        FirebaseApp.configure()
+        db = Firestore.firestore()
         
         // if there is data already
         
@@ -155,8 +231,8 @@ class TasksManager{
                 print("\(entry.key)  \(entry.value)")
             }
         }
-        
-         // if not
+            
+            // if not
         else{
             
             // try migration
@@ -173,7 +249,7 @@ class TasksManager{
                 
                 // if no migration
             else{
-                 // create a placeholder task
+                // create a placeholder task
                 
                 if tasksDictionary.isEmpty{
                     
@@ -186,7 +262,7 @@ class TasksManager{
         
         
         
-    
+        
         
         
         

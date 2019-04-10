@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F8DAFE2225E3CBD00B2566B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F8DAFE1225E3CBD00B2566B /* GoogleService-Info.plist */; };
 		7DA0DFC52209F039005ACF5E /* Tasks.json in Resources */ = {isa = PBXBuildFile; fileRef = 7DA0DFC42209F039005ACF5E /* Tasks.json */; };
 		7DC5BBA121CFE99F00D40150 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA021CFE99F00D40150 /* AppDelegate.swift */; };
 		7DC5BBA321CFE99F00D40150 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA221CFE99F00D40150 /* ViewController.swift */; };
@@ -15,9 +16,13 @@
 		7DC5BBAB21CFE9A000D40150 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA921CFE9A000D40150 /* LaunchScreen.storyboard */; };
 		7DC5BBB321CFEBA500D40150 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5BBB221CFEBA500D40150 /* TableViewController.swift */; };
 		7DD3812721D186B1009C63E5 /* TasksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DD3812621D186B1009C63E5 /* TasksManager.swift */; };
+		84C798DB1A677188E10C8CED /* Pods_Revive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33869393D275860271FFFA41 /* Pods_Revive.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F8DAFE1225E3CBD00B2566B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		33869393D275860271FFFA41 /* Pods_Revive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Revive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6450488CC24BBF8E3B805347 /* Pods-Revive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Revive.release.xcconfig"; path = "Target Support Files/Pods-Revive/Pods-Revive.release.xcconfig"; sourceTree = "<group>"; };
 		7DA0DFC42209F039005ACF5E /* Tasks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tasks.json; sourceTree = "<group>"; };
 		7DC5BB9D21CFE99F00D40150 /* Revive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Revive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DC5BBA021CFE99F00D40150 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -28,6 +33,7 @@
 		7DC5BBAC21CFE9A000D40150 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7DC5BBB221CFEBA500D40150 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		7DD3812621D186B1009C63E5 /* TasksManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksManager.swift; sourceTree = "<group>"; };
+		AE307B750540EFA05A0E896A /* Pods-Revive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Revive.debug.xcconfig"; path = "Target Support Files/Pods-Revive/Pods-Revive.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,17 +41,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84C798DB1A677188E10C8CED /* Pods_Revive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		279AA0302891C1FE784DDF9C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				33869393D275860271FFFA41 /* Pods_Revive.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		689429FB25BB9E54AEE6E675 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AE307B750540EFA05A0E896A /* Pods-Revive.debug.xcconfig */,
+				6450488CC24BBF8E3B805347 /* Pods-Revive.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		7DC5BB9421CFE99E00D40150 = {
 			isa = PBXGroup;
 			children = (
 				7DC5BB9F21CFE99F00D40150 /* Revive */,
 				7DC5BB9E21CFE99F00D40150 /* Products */,
+				689429FB25BB9E54AEE6E675 /* Pods */,
+				279AA0302891C1FE784DDF9C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -69,6 +95,7 @@
 				7DC5BBA921CFE9A000D40150 /* LaunchScreen.storyboard */,
 				7DC5BBAC21CFE9A000D40150 /* Info.plist */,
 				7DA0DFC42209F039005ACF5E /* Tasks.json */,
+				2F8DAFE1225E3CBD00B2566B /* GoogleService-Info.plist */,
 			);
 			path = Revive;
 			sourceTree = "<group>";
@@ -80,9 +107,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7DC5BBAF21CFE9A000D40150 /* Build configuration list for PBXNativeTarget "Revive" */;
 			buildPhases = (
+				06196B4C7D7DACF9896FEB2B /* [CP] Check Pods Manifest.lock */,
 				7DC5BB9921CFE99F00D40150 /* Sources */,
 				7DC5BB9A21CFE99F00D40150 /* Frameworks */,
 				7DC5BB9B21CFE99F00D40150 /* Resources */,
+				0036E88D8C4C3B59CDE3D8F7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,12 +162,72 @@
 			files = (
 				7DA0DFC52209F039005ACF5E /* Tasks.json in Resources */,
 				7DC5BBAB21CFE9A000D40150 /* LaunchScreen.storyboard in Resources */,
+				2F8DAFE2225E3CBD00B2566B /* GoogleService-Info.plist in Resources */,
 				7DC5BBA821CFE9A000D40150 /* Assets.xcassets in Resources */,
 				7DC5BBA621CFE99F00D40150 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0036E88D8C4C3B59CDE3D8F7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Revive/Pods-Revive-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Revive/Pods-Revive-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		06196B4C7D7DACF9896FEB2B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Revive-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7DC5BB9921CFE99F00D40150 /* Sources */ = {
@@ -292,6 +381,7 @@
 		};
 		7DC5BBB021CFE9A000D40150 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE307B750540EFA05A0E896A /* Pods-Revive.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -310,6 +400,7 @@
 		};
 		7DC5BBB121CFE9A000D40150 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6450488CC24BBF8E3B805347 /* Pods-Revive.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

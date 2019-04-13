@@ -218,10 +218,17 @@ class TasksManager{
     
     
     init() {
+        
         FirebaseApp.configure()
         db = Firestore.firestore()
+       
+        
+        
         
         // if there is data already
+        
+        
+        
         
         if let tasksDictionary = localStorage.data(forKey: "tasksDictionary"){
             self.tasksDictionary = try! JSONDecoder().decode([String:Task].self, from: tasksDictionary)
@@ -260,6 +267,30 @@ class TasksManager{
             }
         }
         
+        
+        // upload all data to firebase (if firebase gets corrupted
+        
+       
+        
+         // firebase
+        /*
+         func stepToDictionary(step:Step)->[String:Any]{
+         return  ["comment":step.comment,"date":Timestamp(date: step.date)]
+         }
+         
+         for task in tasks{
+         
+         db.collection("tasks").document(task.name).setData([
+         
+         "steps" : task.steps.map(stepToDictionary),
+         "name": task.name,
+         
+         "count": task.steps.count-1,
+         "lastCompletionDate":Timestamp(date:task.steps.last!.date)])
+         
+         
+         }
+ */
         
         
         

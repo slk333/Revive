@@ -52,11 +52,16 @@ class TableViewController: UITableViewController {
         
         let saveAction=UIAlertAction(title: "Save", style: .destructive){alertAction in
             
-            guard let taskName = alertController.textFields?.first?.text, taskName != "" else{
+            guard let taskName = alertController.textFields?.first?.text, taskName != "", taskName.contains("/") == false else{
+                alertController.textFields?.first?.text = "cannot be empty or have slashs"
                 self.present(alertController, animated: true, completion: nil)
-                print("There was no input!")
+                print("There was no input or a slash in the task name!")
                 return
             }
+            
+            
+          
+            
             
             guard self.tasksManager.tasksDictionary[taskName] == nil  else{
                 self.present(alertController, animated: true, completion: nil)
@@ -224,7 +229,7 @@ class TableViewController: UITableViewController {
             
             guard let comment = alertController.textFields?.first?.text, comment != "" else{
                 self.present(alertController, animated: true, completion: nil)
-                print("there was no input, asking again")
+                print("there was no input, or there was a slash, asking again")
                 return
             }
             

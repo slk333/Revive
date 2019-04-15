@@ -119,7 +119,7 @@ class TableViewController: UITableViewController {
         
         let nameLabel = cell.viewWithTag(1) as! UILabel
         
-        let task : TasksManager.Task
+        let task : Task
         if isFiltering(){
             task = tasksManager.filteredTasks[i]
         } else{
@@ -287,7 +287,7 @@ extension TableViewController:UISearchResultsUpdating{
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        self.tasksManager.filteredTasks  = self.tasksManager.tasks.filter({( task : TasksManager.Task) -> Bool in
+        self.tasksManager.filteredTasks  = self.tasksManager.tasks.filter({( task : Task) -> Bool in
             return task.name.lowercased().contains(searchText.lowercased())
         })
         

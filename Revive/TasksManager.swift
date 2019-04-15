@@ -3,49 +3,13 @@ import Firebase
 
 
 class TasksManager{
-    var db : Firestore!
     
     
-    
-    
-    
-    
+    let firebaseHelper : FirebaseHelper!
+    let collectionId = "tasks"
     let localStorage = UserDefaults.standard
-    
-    
-    struct Step:Codable{
-        let date : Date
-        let comment : String
-        
-        init(date:Date = Date(),comment:String = "Task Added") {
-            self.date = date
-            self.comment = comment
-        }
-    }
-    
-    struct Task:Codable{
-        
-        let name : String
-        var steps : [Step]
-        var count : Int {return steps.count-1}
-        var lactCompletionDate : Date {return steps.last!.date}
-        
-        
-        init(name:String,steps:[Step] = [Step()]){
-            
-            self.steps = steps
-            self.name = name
-            
-        }
-    }
-    
-    
-    
-    
     var tasksDictionary = [String:Task]()
-    
-    
-    
+    var filteredTasks = [Task]()
     
     var tasks : [Task] {
         return(
@@ -55,12 +19,8 @@ class TasksManager{
                     t1.steps.last!.date < t2.steps.last!.date
                 })
         )
-        
+
     }
-    
-    
-    
-    var filteredTasks = [Task]()
     
     var taskDates:[Date] { return tasks.map{
         // the date of the task is defined as the date of the last step which was made
@@ -88,33 +48,20 @@ class TasksManager{
         tasksDictionary.updateValue(newTask, forKey: name)
         saveTasks()
         
-        
-        
-        
-        // firebase
         func stepToDictionary(step:Step)->[String:Any]{
             return  ["comment":step.comment,"date":Timestamp(date: step.date)]
         }
         
-        
-        db.collection("tasks").document(newTask.name).setData([
-            
+        let fields = [
             "steps" : newTask.steps.map(stepToDictionary),
             "name": newTask.name,
-            
             "count": newTask.steps.count-1,
             "lastCompletionDate":Timestamp(date:newTask.steps.last!.date)
-            
-            
-            
-        ]) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully written!")
-            }
-        }
+            ] as [String : Any]
         
+        
+        // firebase
+        firebaseHelper.createDoc(collectionId: collectionId, docId: newTask.name, fields: fields)
         // firebase fin
         
     }
@@ -123,45 +70,33 @@ class TasksManager{
         tasksDictionary.removeValue(forKey: name)
         saveTasks()
         
-        db.collection("tasks").document(name).delete() { err in
-            if let err = err {
-                print("Error removing document: \(err)")
-            } else {
-                print("Document successfully removed!")
-            }
-        }
+        firebaseHelper.delete(collectionId: collectionId, docId: name)
         
     }
     
     func createStep(name:String,comment:String){
         // add a step
-        
         let newStep = Step(comment: comment)
         tasksDictionary[name]!.steps.append(newStep)
         saveTasks()
         
-        // firebase
         func stepToDictionary(step:Step)->[String:Any]{
             return  ["comment":step.comment,"date":Timestamp(date: step.date)]
         }
         
-        db.collection("tasks").document(name).updateData([
-            "steps": FieldValue.arrayUnion([stepToDictionary(step: newStep)])
-        ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
-        }
+        let fields = ["steps": FieldValue.arrayUnion([stepToDictionary(step: newStep)]),
+                     "count": FieldValue.increment(1.0),
+                     "lastCompletionDate": Timestamp(date:newStep.date)
+            ]as [String : Any]
+        
+        
+        // firebase
+        firebaseHelper.update(collectionId: collectionId, docId: name, fields: fields)
+        
+        
         // firebase end
         
-        
-        
-        
-        
-        
-        
+       
         
         
     }
@@ -208,23 +143,10 @@ class TasksManager{
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     init() {
         
-        FirebaseApp.configure()
-        db = Firestore.firestore()
-       
-        
-        
-        
+        firebaseHelper = FirebaseHelper()
+      
         // if there is data already
         
         
@@ -234,9 +156,7 @@ class TasksManager{
             self.tasksDictionary = try! JSONDecoder().decode([String:Task].self, from: tasksDictionary)
             print("loaded dictionary from localStorage with success! content: *************")
             
-            for entry in self.tasksDictionary{
-                print("\(entry.key)  \(entry.value)")
-            }
+         
         }
             
             // if not
@@ -270,53 +190,29 @@ class TasksManager{
         
         // upload all data to firebase (if firebase gets corrupted
         
-       
+        //
         
-         // firebase
-        /*
-         func stepToDictionary(step:Step)->[String:Any]{
-         return  ["comment":step.comment,"date":Timestamp(date: step.date)]
-         }
-         
-         for task in tasks{
-         
-         db.collection("tasks").document(task.name).setData([
-         
-         "steps" : task.steps.map(stepToDictionary),
-         "name": task.name,
-         
-         "count": task.steps.count-1,
-         "lastCompletionDate":Timestamp(date:task.steps.last!.date)])
-         
-         
-         }
- */
+        // firebase
+        func uploadAllData(){
+            func stepToDictionary(step:Step)->[String:Any]{
+                return  ["comment":step.comment,"date":Timestamp(date: step.date)]
+            }
+            
+            for task in tasks{
+                let fields = ["steps" : task.steps.map(stepToDictionary),
+                              "name": task.name,
+                              "count": task.steps.count-1,
+                              "lastCompletionDate":Timestamp(date:task.steps.last!.date)
+                    ] as [String : Any]
+                
+                firebaseHelper.createDoc(collectionId: collectionId, docId: task.name, fields: fields)
+                
+                
+            }
+        }
         
-        
-        
-        
-        
-        
-        
-        
-        
+        //  uploadAllData()
+      
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

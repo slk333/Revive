@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2F8DAFE2225E3CBD00B2566B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F8DAFE1225E3CBD00B2566B /* GoogleService-Info.plist */; };
+		2FC60E5C2264B283009C6691 /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC60E5B2264B283009C6691 /* FirebaseHelper.swift */; };
+		2FC60E5E2264C160009C6691 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC60E5D2264C160009C6691 /* Model.swift */; };
 		7DA0DFC52209F039005ACF5E /* Tasks.json in Resources */ = {isa = PBXBuildFile; fileRef = 7DA0DFC42209F039005ACF5E /* Tasks.json */; };
 		7DC5BBA121CFE99F00D40150 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA021CFE99F00D40150 /* AppDelegate.swift */; };
 		7DC5BBA321CFE99F00D40150 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC5BBA221CFE99F00D40150 /* ViewController.swift */; };
@@ -21,6 +23,8 @@
 
 /* Begin PBXFileReference section */
 		2F8DAFE1225E3CBD00B2566B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2FC60E5B2264B283009C6691 /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
+		2FC60E5D2264C160009C6691 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		33869393D275860271FFFA41 /* Pods_Revive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Revive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6450488CC24BBF8E3B805347 /* Pods-Revive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Revive.release.xcconfig"; path = "Target Support Files/Pods-Revive/Pods-Revive.release.xcconfig"; sourceTree = "<group>"; };
 		7DA0DFC42209F039005ACF5E /* Tasks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tasks.json; sourceTree = "<group>"; };
@@ -89,8 +93,10 @@
 				7DC5BBA421CFE99F00D40150 /* Main.storyboard */,
 				7DC5BBA021CFE99F00D40150 /* AppDelegate.swift */,
 				7DC5BBA221CFE99F00D40150 /* ViewController.swift */,
+				2FC60E5D2264C160009C6691 /* Model.swift */,
 				7DC5BBB221CFEBA500D40150 /* TableViewController.swift */,
 				7DD3812621D186B1009C63E5 /* TasksManager.swift */,
+				2FC60E5B2264B283009C6691 /* FirebaseHelper.swift */,
 				7DC5BBA721CFE9A000D40150 /* Assets.xcassets */,
 				7DC5BBA921CFE9A000D40150 /* LaunchScreen.storyboard */,
 				7DC5BBAC21CFE9A000D40150 /* Info.plist */,
@@ -237,7 +243,9 @@
 				7DC5BBA321CFE99F00D40150 /* ViewController.swift in Sources */,
 				7DC5BBB321CFEBA500D40150 /* TableViewController.swift in Sources */,
 				7DD3812721D186B1009C63E5 /* TasksManager.swift in Sources */,
+				2FC60E5E2264C160009C6691 /* Model.swift in Sources */,
 				7DC5BBA121CFE99F00D40150 /* AppDelegate.swift in Sources */,
+				2FC60E5C2264B283009C6691 /* FirebaseHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -131,14 +131,27 @@ class TableViewController: UITableViewController {
         
         let dateLabel = cell.viewWithTag(2) as! UILabel
         
-        let date = task.steps.last!.date
-        let myFormatter = DateFormatter()
-        myFormatter.dateFormat = "EEEE dd MMMM', à' HH:mm"
-        myFormatter.locale=Locale(identifier: "fr")
-     //   let durationInDays = floor(date.timeIntervalSinceNow * -1 * 10 / (3600 * 24)) / 10
-        let durationInDays = Calendar.current.dateComponents([.day], from: date, to: Date()).day!
-        dateLabel.text = myFormatter.string(from: date) + " [\(durationInDays)]"
+        let now = Date()
         
+        let myFormatter = DateFormatter()
+        // day like Monday is EEEE
+        myFormatter.dateFormat = "MMMM dd', 'HH:mm"
+        myFormatter.locale=Locale.current
+        let daysSinceLastStep = Calendar.current.dateComponents([.day], from: task.lactCompletionDate, to: now).day!
+        
+        dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [\(daysSinceLastStep) days ago]"
+        
+        if daysSinceLastStep == 0 {
+            let hoursSinceLastStep =  Calendar.current.dateComponents([.hour], from: task.lactCompletionDate, to: now).hour!
+            if hoursSinceLastStep > 0 {
+                 dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [\(hoursSinceLastStep) hours ago]"
+            }
+            else {
+                dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [A few minutes ago]"
+                
+            }
+            
+        }
         
         
         

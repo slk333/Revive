@@ -133,10 +133,10 @@ class TableViewController: UITableViewController {
         
         let date = task.steps.last!.date
         let myFormatter = DateFormatter()
-        myFormatter.dateFormat = "EEEE dd MMMM yyyy', à' HH:mm"
+        myFormatter.dateFormat = "EEEE dd MMMM', à' HH:mm"
         myFormatter.locale=Locale(identifier: "fr")
-        let durationInDays = floor(date.timeIntervalSinceNow * -1 * 10 / (3600 * 24)) / 10
-        
+     //   let durationInDays = floor(date.timeIntervalSinceNow * -1 * 10 / (3600 * 24)) / 10
+        let durationInDays = Calendar.current.dateComponents([.day], from: date, to: Date()).day!
         dateLabel.text = myFormatter.string(from: date) + " [\(durationInDays)]"
         
         

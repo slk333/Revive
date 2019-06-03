@@ -1,11 +1,6 @@
 import UIKit
-extension UINavigationController {
-    
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return topViewController?.preferredStatusBarStyle ?? .default
-    }
-}
-class TableViewController: UITableViewController {
+
+class ScheduleTVC: UITableViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -14,8 +9,7 @@ class TableViewController: UITableViewController {
     let searchController = UISearchController(searchResultsController: nil)
     
     
-    
-    let tasksManager = TasksManager()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +57,7 @@ class TableViewController: UITableViewController {
           
             
             
-            guard self.tasksManager.tasksDictionary[taskName] == nil  else{
+            guard tasksManager.tasksDictionary[taskName] == nil  else{
                 self.present(alertController, animated: true, completion: nil)
                 print("That name is already being used!")
                 return
@@ -73,9 +67,9 @@ class TableViewController: UITableViewController {
             
             
             
-            self.tasksManager.createNewTask(name: taskName)
+            tasksManager.createNewTask(name: taskName)
             
-            self.tableView.insertRows(at: [IndexPath(row: self.tasksManager.tasks.count-1, section: 0)], with: .automatic)
+            self.tableView.insertRows(at: [IndexPath(row: tasksManager.tasks.count-1, section: 0)], with: .automatic)
             
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -249,21 +243,21 @@ class TableViewController: UITableViewController {
             // step validated with non-void commit-message
             
             // update data
-            self.tasksManager.createStep(name:name,comment:comment)
+            tasksManager.createStep(name:name,comment:comment)
             
             tableView.deselectRow(at: indexPath, animated: true)
             
             if self.isFiltering(){
                 self.filterContentForSearchText((self.navigationItem.searchController?.searchBar.text!)!)
                 tableView.moveRow(at : indexPath,
-                                  to : IndexPath(row: self.tasksManager.filteredTasks.count-1, section: 0))
-                tableView.reloadRows(at: [IndexPath(row: self.tasksManager.filteredTasks.count-1, section: 0)], with: .automatic)
+                                  to : IndexPath(row: tasksManager.filteredTasks.count-1, section: 0))
+                tableView.reloadRows(at: [IndexPath(row: tasksManager.filteredTasks.count-1, section: 0)], with: .automatic)
             }
             else{
                 
                 tableView.moveRow(at : indexPath,
-                                  to : IndexPath(row: self.tasksManager.tasks.count-1, section: 0))
-                tableView.reloadRows(at: [IndexPath(row: self.tasksManager.tasks.count-1, section: 0)], with: .automatic)
+                                  to : IndexPath(row: tasksManager.tasks.count-1, section: 0))
+                tableView.reloadRows(at: [IndexPath(row: tasksManager.tasks.count-1, section: 0)], with: .automatic)
                 
             }
             
@@ -287,7 +281,7 @@ class TableViewController: UITableViewController {
 }
 
 
-extension TableViewController:UISearchResultsUpdating{
+extension ScheduleTVC:UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
         
         filterContentForSearchText(searchController.searchBar.text!)
@@ -300,7 +294,7 @@ extension TableViewController:UISearchResultsUpdating{
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        self.tasksManager.filteredTasks  = self.tasksManager.tasks.filter({( task : Task) -> Bool in
+        tasksManager.filteredTasks  = tasksManager.tasks.filter({( task : Task) -> Bool in
             return task.name.lowercased().contains(searchText.lowercased())
         })
         

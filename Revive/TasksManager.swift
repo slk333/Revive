@@ -2,6 +2,7 @@ import Foundation
 import Firebase
 
 
+let tasksManager = TasksManager()
 class TasksManager{
     
     
@@ -10,6 +11,7 @@ class TasksManager{
     let localStorage = UserDefaults.standard
     var tasksDictionary = [String:Task]()
     var filteredTasks = [Task]()
+    var filteredSteps = [(name:String,step:Step)]()
     
     var tasks : [Task] {
         return(
@@ -21,6 +23,29 @@ class TasksManager{
         )
 
     }
+    
+    var allSteps : [(name:String,step:Step)] {
+        var stepsArray = [(String,Step)]()
+        for task in tasks{
+            for step in task.steps{
+                stepsArray.append((task.name,step))
+            }
+        }
+        
+        return stepsArray
+    }
+    
+    var allStepsSorted : [(name:String,step:Step)]{
+        return allSteps.sorted(by: { (tuple1, tuple2) -> Bool in
+            tuple1.step.date < tuple2.step.date
+        })
+  
+    }
+    
+    
+    
+    
+    
     
     var taskDates:[Date] { return tasks.map{
         // the date of the task is defined as the date of the last step which was made

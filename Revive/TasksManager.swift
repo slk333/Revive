@@ -171,6 +171,7 @@ class TasksManager{
     init() {
         
         firebaseHelper = FirebaseHelper()
+        
       
         // if there is data already
         

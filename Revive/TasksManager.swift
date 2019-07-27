@@ -37,7 +37,8 @@ class TasksManager{
     
     var allStepsSorted : [(name:String,step:Step)]{
         return allSteps.sorted(by: { (tuple1, tuple2) -> Bool in
-            tuple1.step.date < tuple2.step.date
+            // most recently completed steps appear first
+            tuple1.step.date > tuple2.step.date
         })
   
     }

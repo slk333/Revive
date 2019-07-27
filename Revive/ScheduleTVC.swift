@@ -1,4 +1,5 @@
 import UIKit
+import UserNotifications
 
 class ScheduleTVC: UITableViewController {
     
@@ -7,9 +8,18 @@ class ScheduleTVC: UITableViewController {
     }
     
     let searchController = UISearchController(searchResultsController: nil)
+    let notificationCenter = UNUserNotificationCenter.current()
     
     
-
+    override func viewDidAppear(_ animated: Bool) {
+        
+        notificationCenter.requestAuthorization(options: [.alert, .sound])
+        { (granted, error) in
+            print(error)
+            print(granted)
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +47,18 @@ class ScheduleTVC: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTask))
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
     }
     
     
@@ -54,7 +76,7 @@ class ScheduleTVC: UITableViewController {
             }
             
             
-          
+            
             
             
             guard tasksManager.tasksDictionary[taskName] == nil  else{
@@ -123,13 +145,16 @@ class ScheduleTVC: UITableViewController {
         
         nameLabel.text = task.name
         
+        let scoreLabel = cell.viewWithTag(5) as! UILabel
+        scoreLabel.text = " [\(task.count)]"
+        
         let dateLabel = cell.viewWithTag(2) as! UILabel
         
         let now = Date()
         
         let myFormatter = DateFormatter()
         // day like Monday is EEEE
-        myFormatter.dateFormat = "MMMM dd', 'HH:mm"
+        myFormatter.dateFormat = "EEEE', 'MMMM dd', 'HH:mm"
         myFormatter.locale=Locale.current
         let daysSinceLastStep = Calendar.current.dateComponents([.day], from: task.lactCompletionDate, to: now).day!
         
@@ -138,7 +163,7 @@ class ScheduleTVC: UITableViewController {
         if daysSinceLastStep == 0 {
             let hoursSinceLastStep =  Calendar.current.dateComponents([.hour], from: task.lactCompletionDate, to: now).hour!
             if hoursSinceLastStep > 0 {
-                 dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [\(hoursSinceLastStep) hours ago]"
+                dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [\(hoursSinceLastStep) hours ago]"
             }
             else {
                 dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [A few minutes ago]"
@@ -224,10 +249,14 @@ class ScheduleTVC: UITableViewController {
      */
     
     
+    
+    
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let cell = tableView.cellForRow(at: indexPath)!
         let nameLabel = cell.viewWithTag(1) as! UILabel
+      
         let name = nameLabel.text!
         
         let alertController=UIAlertController(title: "Save your progress", message: "what did you do ?", preferredStyle: UIAlertController.Style.alert)
@@ -242,8 +271,28 @@ class ScheduleTVC: UITableViewController {
             
             // step validated with non-void commit-message
             
+   
+            
+            
+            
             // update data
             tasksManager.createStep(name:name,comment:comment)
+            
+            // save a notification if it's a gym task
+            if name.contains("GYM"){
+               self.notificationCenter.getNotificationSettings { (notificationSettings) in
+                   // Do not schedule notifications if not authorized.
+                   guard notificationSettings.authorizationStatus == .authorized else {fatalError("not authorized")}
+                   
+                   
+                   if notificationSettings.alertSetting == .enabled {
+                       
+                       self.scheduleNotification(name:name,comment:comment)
+                
+                   }
+                 
+               }
+            }
             
             tableView.deselectRow(at: indexPath, animated: true)
             

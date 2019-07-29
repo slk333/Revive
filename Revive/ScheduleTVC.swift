@@ -8,23 +8,26 @@ class ScheduleTVC: UITableViewController {
     }
     
     let searchController = UISearchController(searchResultsController: nil)
+    
+    
+    // ask permission for notifications
     let notificationCenter = UNUserNotificationCenter.current()
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         
         notificationCenter.requestAuthorization(options: [.alert, .sound])
         { (granted, error) in
-            print(error)
+            print(error ?? "no error")
             print(granted)
         }
     }
     
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        // compute and display the total score
         var scoreTotal = 0
         for task in tasksManager.tasks{
             scoreTotal += (task.steps.count - 1)
@@ -33,9 +36,10 @@ class ScheduleTVC: UITableViewController {
         scoreLabel.text = "[\(scoreTotal)]"
         scoreLabel.sizeToFit()
         scoreLabel.textColor = .white
-        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: scoreLabel)
         
+        
+        // setup the searchBar
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Task"
@@ -43,20 +47,10 @@ class ScheduleTVC: UITableViewController {
         definesPresentationContext = true
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
+        // setup the add task button
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTask))
         
-        
-        
-        
-    
-        
-        
-        
-        
-        
+         
         
         
     }
@@ -77,15 +71,11 @@ class ScheduleTVC: UITableViewController {
             
             
             
-            
-            
             guard tasksManager.tasksDictionary[taskName] == nil  else{
                 self.present(alertController, animated: true, completion: nil)
                 print("That name is already being used!")
                 return
             }
-            
-            
             
             
             
@@ -151,26 +141,16 @@ class ScheduleTVC: UITableViewController {
         let dateLabel = cell.viewWithTag(2) as! UILabel
         
         let now = Date()
-        
         let myFormatter = DateFormatter()
         // day like Monday is EEEE
         myFormatter.dateFormat = "EEEE', 'MMMM dd', 'HH:mm"
-        myFormatter.locale=Locale.current
-        let daysSinceLastStep = Calendar.current.dateComponents([.day], from: task.lactCompletionDate, to: now).day!
+        let myRelativeFormatter = RelativeDateTimeFormatter()
         
-        dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [\(daysSinceLastStep) days ago]"
         
-        if daysSinceLastStep == 0 {
-            let hoursSinceLastStep =  Calendar.current.dateComponents([.hour], from: task.lactCompletionDate, to: now).hour!
-            if hoursSinceLastStep > 0 {
-                dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [\(hoursSinceLastStep) hours ago]"
-            }
-            else {
-                dateLabel.text = myFormatter.string(from: task.lactCompletionDate) + " [A few minutes ago]"
-                
-            }
-            
-        }
+        dateLabel.text = myFormatter.string(from: task.lastCompletionDate) + " [" + myRelativeFormatter.localizedString(for: task.lastCompletionDate, relativeTo: now) + "]"
+        
+
+      
         
         
         
@@ -330,6 +310,7 @@ class ScheduleTVC: UITableViewController {
 }
 
 
+// handle the search input
 extension ScheduleTVC:UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
         

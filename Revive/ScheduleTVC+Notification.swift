@@ -3,7 +3,8 @@ import UserNotifications
 
 extension ScheduleTVC{
     
-      
+   
+    // create notification content, trigger, identifier. create a notification request with it and add it to the notification center
  
     func scheduleNotification(name:String,comment:String){
            
@@ -12,7 +13,7 @@ extension ScheduleTVC{
            content.body = comment
         content.subtitle = "4 days ago"
            
-           // Configure the recurring date.
+           // Configure the notification date, relatively or absolutely.
            let calculatedDate = Calendar.current.date(byAdding: .day, value: 4, to: Date())!
            let components = Calendar.current.dateComponents([.day,.hour,.minute,.second], from: calculatedDate)
            
@@ -23,7 +24,7 @@ extension ScheduleTVC{
            let uuidString = UUID().uuidString
            let request = UNNotificationRequest(identifier: uuidString,
                                                content: content, trigger: trigger)
-   // queue la notification
+            // queue la notification
            self.notificationCenter.add(request) { (error) in
                if error != nil {
                    // Handle any errors.

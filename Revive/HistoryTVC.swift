@@ -2,7 +2,8 @@ import UIKit
 
 class HistoryTVC: UITableViewController {
     
-
+    let myFormatter = DateFormatter()
+    let myRelativeFormatter = RelativeDateTimeFormatter()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -15,6 +16,8 @@ class HistoryTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+         myFormatter.dateFormat = "MMMM dd', 'HH:mm"
         
         
         var scoreTotal = 0
@@ -88,13 +91,12 @@ class HistoryTVC: UITableViewController {
         let dateLabel = cell.viewWithTag(2) as! UILabel
         
         
-        let myFormatter = DateFormatter()
-        // day like Monday is EEEE
-        myFormatter.dateFormat = "MMMM dd', 'HH:mm"
-        myFormatter.locale=Locale.current
+    
       
-        dateLabel.text = myFormatter.string(from: step.date)
-        
+        dateLabel.text = myFormatter.string(from: step.date) + " [" + myRelativeFormatter.localizedString(for: step.date, relativeTo: Date())  + "]"
+     
+           
+               
      
     
         

@@ -35,13 +35,7 @@ class TasksManager{
         return stepsArray
     }
     
-    var allStepsSorted : [(name:String,step:Step)]{
-        return allSteps.sorted(by: { (tuple1, tuple2) -> Bool in
-            // most recently completed steps appear first
-            tuple1.step.date > tuple2.step.date
-        })
-  
-    }
+    var allStepsSorted : [(name:String,step:Step)]!
     
     
     
@@ -50,14 +44,14 @@ class TasksManager{
     
     var taskDates:[Date] { return tasks.map{
         // the date of the task is defined as the date of the last step which was made
-        (task:Task) in return task.lactCompletionDate
+        (task:Task) in return task.lastCompletionDate
         }
     }
     
     // the task priority is relative to the oldest task
     func taskPriorityForTaskAt(index:Int)->Float{
         let oldestTaskAge = taskDates.min()!.timeIntervalSinceNow
-        let currentTaskAge = tasks[index].lactCompletionDate.timeIntervalSinceNow
+        let currentTaskAge = tasks[index].lastCompletionDate.timeIntervalSinceNow
         let proportion = currentTaskAge / oldestTaskAge
         return Float(proportion)
     }
@@ -213,6 +207,18 @@ class TasksManager{
                 }
             }
         }
+        
+        allStepsSorted = allSteps.sorted(by: { (tuple1, tuple2) -> Bool in
+                // most recently completed steps appear first
+                tuple1.step.date > tuple2.step.date
+            })
+        
+        
+        
+        
+        
+        
+        
         
         
         // upload all data to firebase (if firebase gets corrupted

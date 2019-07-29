@@ -45,11 +45,6 @@ class FirebaseHelper{
     
     
     
-    
-    
-    
-    
-    
     func createDoc(collectionId:String,docId:String,fields:[String:Any]){
         
         db.collection(collectionId).document(docId).setData(fields) { err in

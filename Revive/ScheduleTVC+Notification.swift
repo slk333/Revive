@@ -14,7 +14,7 @@ extension ScheduleTVC{
         content.subtitle = "4 days ago"
            
            // Configure the notification date, relatively or absolutely.
-           let calculatedDate = Calendar.current.date(byAdding: .day, value: 4, to: Date())!
+           let calculatedDate = Calendar.current.date(byAdding: .day, value: 5, to: Date())!
            let components = Calendar.current.dateComponents([.day,.hour,.minute,.second], from: calculatedDate)
            
            // Create the trigger as a repeating event.

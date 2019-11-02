@@ -7,7 +7,6 @@ target 'Revive' do
 
   # Pods for Revive
 
-pod 'Firebase/Core'
 pod 'Firebase/Firestore'
 
 end
